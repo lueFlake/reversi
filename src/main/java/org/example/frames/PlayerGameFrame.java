@@ -19,7 +19,7 @@ public class PlayerGameFrame extends Frame {
     private static final Character valid = '◎';
     private static final Character hint = '*';
 
-    private GridAnalyzer analyzer = null;
+    private GridAnalyzer hinter = null;
 
     public PlayerGameFrame(GameGrid grid) {
         super(new ArrayList<>());
@@ -53,7 +53,8 @@ public class PlayerGameFrame extends Frame {
 
     public void refreshGrid() {
         lines.clear();
-        int max = analyzer == null ? 0 : analyzer.getMax();
+
+        int max = hinter == null ? 0 : hinter.getMax();
         for (int i = 0; i < grid.getSize(); i++) {
             var line = new StringBuilder();
             for (int j = 0; j < grid.getSize(); j++) {
@@ -63,7 +64,7 @@ public class PlayerGameFrame extends Frame {
                     line.append(black);
                 } else {
                     if (grid.validateCell(i, j)) {
-                        if (analyzer != null && analyzer.getEstimation(i, j) == max) {
+                        if (hinter != null && hinter.getEstimation(i, j) == max) {
                             line.append(hint);
                         } else {
                             line.append(valid);
@@ -98,6 +99,7 @@ public class PlayerGameFrame extends Frame {
     }
 
     public void enableHints(GridAnalyzer analyzer) {
-        this.analyzer = analyzer;
+        this.hinter = analyzer;
+        refreshGrid();
     }
 }
