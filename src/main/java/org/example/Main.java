@@ -17,7 +17,9 @@ public class Main {
 
     private static GridAnalyzer hintAnalyzer = null;
 
+    private static int bestScore = 0;
     private static final CellState botColor = CellState.White;
+    private static final CellState playerColor = CellState.Black;
 
     public static void main(String[] args) {
         var startList = new ArrayList<String>();
@@ -25,7 +27,7 @@ public class Main {
         startList.add("Игра против игрока.");
         startList.add("Настройки подсказок.");
         startList.add("Выход.");
-        var startMenu = new MenuFrame(startList, "Реверсио!");
+        var startMenu = new MenuFrame(startList, "Реверсио! Ваш лучший результат против бота - " + bestScore + "!");
         int gameOption;
         boolean end = false;
         do {
@@ -41,6 +43,7 @@ public class Main {
                     if (hintAnalyzer != null) {
                         pveGameFrame.enableHints(hintAnalyzer);
                     }
+                    bestScore = Math.max(bestScore, grid.getScore(playerColor));
                     end = startGame(pveGameFrame);
                 }
                 case 2 -> {
@@ -113,7 +116,8 @@ public class Main {
                 "Счет:" +
                 whiteScore +
                 ":" +
-                blackScore;
+                blackScore +
+                ". Лучший результат в главном меню.";
 
         var finalFrame = new MenuFrame(finalMenu, text);
         finalFrame.show(frameSize);
